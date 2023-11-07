@@ -1,19 +1,21 @@
 import { convertStringNumber } from "./convertStringNumber.js"; // обязательно дописать ручками .js
+import { OverlayScrollbars } from "./overlayscrollbars_2.4.4.min.js";
+console.log("OverlayScrollbars: ", OverlayScrollbars);
 
 const financeForm = document.querySelector(".finance__form");
 const financeAmount = document.querySelector(".finance__amount");
 
 let amount = 0;
 // кусочек кода со стрима
-const foo = () =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('hello');
-    }, 5000);
-  });
+// const foo = () =>
+//   new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve("hello");
+//     }, 5000);
+//   });
 
-const resultFoo = await foo()
-console.log('resultFoo: ', resultFoo);
+// const resultFoo = await foo();
+// console.log("resultFoo: ", resultFoo);
 
 financeAmount.textContent = amount;
 
@@ -38,13 +40,46 @@ financeForm.addEventListener("submit", (e) => {
 });
 
 const financeReport = document.querySelector(".finance__report");
+const report = document.querySelector(".report");
 financeReport.addEventListener("click", () => {
-  const report = document.querySelector(".report");
   report.classList.add("report__open");
 });
 
 const close = document.querySelector(".report__close");
 close.addEventListener("click", () => {
-  const report = document.querySelector(".report");
+  // const report = document.querySelector(".report");
   report.classList.remove("report__open");
 });
+
+OverlayScrollbars(report, {});
+
+// кусочек кода со стрима
+// const people = {
+//   name: "sofi",
+//   age: 43,
+//   city: "Tambov",
+// };
+
+// people[Symbol.iterator] = function () {
+//   const entries = Object.entries(this);
+//   let i = 0;
+
+//   return {
+//     next() {
+//       if (i < entries.length) {
+//         return {
+//           done: false,
+//           value: entries[i++],
+//         };
+//       } else {
+//         return {
+//           done: true,
+//         };
+//       }
+//     },
+//   };
+// };
+
+// for (const key of people) {
+//   console.log("key: ", key);
+// }
