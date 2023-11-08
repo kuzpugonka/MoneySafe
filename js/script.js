@@ -4,18 +4,10 @@ console.log("OverlayScrollbars: ", OverlayScrollbars);
 
 const financeForm = document.querySelector(".finance__form");
 const financeAmount = document.querySelector(".finance__amount");
+const report = document.querySelector(".report");
+const financeReport = document.querySelector(".finance__report");
 
 let amount = 0;
-// кусочек кода со стрима
-// const foo = () =>
-//   new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve("hello");
-//     }, 5000);
-//   });
-
-// const resultFoo = await foo();
-// console.log("resultFoo: ", resultFoo);
 
 financeAmount.textContent = amount;
 
@@ -39,19 +31,35 @@ financeForm.addEventListener("submit", (e) => {
   // .toLocaleString() - выводит числа с пробелом-разделителем
 });
 
-const financeReport = document.querySelector(".finance__report");
-const report = document.querySelector(".report");
-financeReport.addEventListener("click", () => {
-  report.classList.add("report__open");
-});
-
-const close = document.querySelector(".report__close");
-close.addEventListener("click", () => {
-  // const report = document.querySelector(".report");
-  report.classList.remove("report__open");
-});
-
 OverlayScrollbars(report, {});
+
+// мое решение открытия-закрытия модалки
+// const financeReport = document.querySelector(".finance__report");
+// const report = document.querySelector(".report");
+// financeReport.addEventListener("click", () => {
+//   report.classList.add("report__open");
+// });
+// const close = document.querySelector(".report__close");
+// close.addEventListener("click", () => {
+//   report.classList.remove("report__open");
+// });
+
+const closeReport = ({ target }) => {
+  if (
+    target.closest(".report__close") ||
+    (!target.closest(".report") && target !== financeReport) //закроет окно вне модалки
+  ) {
+    report.classList.remove("report__open");
+    document.removeEventListener("click", closeReport); //удалит слушателя при закрытой модалке
+  }
+};
+
+const openReport = () => {
+  report.classList.add("report__open");
+  document.addEventListener("click", closeReport);
+};
+
+financeReport.addEventListener("click", openReport);
 
 // кусочек кода со стрима
 // const people = {
