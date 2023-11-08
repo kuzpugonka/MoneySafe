@@ -1,11 +1,14 @@
 import { convertStringNumber } from "./convertStringNumber.js"; // обязательно дописать ручками .js
 import { OverlayScrollbars } from "./overlayscrollbars_2.4.4.min.js";
-console.log("OverlayScrollbars: ", OverlayScrollbars);
+
+const API_URL = "https://melon-grizzly-beaufort.glitch.me/api";
 
 const financeForm = document.querySelector(".finance__form");
 const financeAmount = document.querySelector(".finance__amount");
 const report = document.querySelector(".report");
 const financeReport = document.querySelector(".finance__report");
+const reportOperationList = document.querySelector(".report__operation-list");
+console.log("reportOperationList: ", reportOperationList);
 
 let amount = 0;
 
@@ -44,6 +47,21 @@ OverlayScrollbars(report, {});
 //   report.classList.remove("report__open");
 // });
 
+const getData = async (url) => {
+  try {
+    const response = await fetch(`${API_URL}${url}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Ошибка при получении данных: ", error);
+    throw error;
+  }
+};
+
 const closeReport = ({ target }) => {
   if (
     target.closest(".report__close") ||
@@ -59,35 +77,125 @@ const openReport = () => {
   document.addEventListener("click", closeReport);
 };
 
-financeReport.addEventListener("click", openReport);
+const renderReport = (data) => {
+  reportOperationList.innerHTML = `
+  <div class="wrapper">
+  <div class="line line1">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line2">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line3">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line4">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line5">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line6">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line7">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line8">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line9">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line10">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+  <div class="line line11">
+    <span class="circle circle-top"></span>
+    <div class="dotted">
+      <span class="dot dot-top"></span>
+      <span class="dot dot-middle-top"></span>
+      <span class="dot dot-middle-bottom"></span>
+      <span class="dot dot-bottom"></span>
+    </div>
+    <span class="circle circle-bottom"></span>
+  </div>
+</div>
+  `;
+};
 
-// кусочек кода со стрима
-// const people = {
-//   name: "sofi",
-//   age: 43,
-//   city: "Tambov",
-// };
-
-// people[Symbol.iterator] = function () {
-//   const entries = Object.entries(this);
-//   let i = 0;
-
-//   return {
-//     next() {
-//       if (i < entries.length) {
-//         return {
-//           done: false,
-//           value: entries[i++],
-//         };
-//       } else {
-//         return {
-//           done: true,
-//         };
-//       }
-//     },
-//   };
-// };
-
-// for (const key of people) {
-//   console.log("key: ", key);
-// }
+financeReport.addEventListener("click", async () => {
+  openReport();
+  const data = await getData("/test");
+  renderReport(data);
+});
