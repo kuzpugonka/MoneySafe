@@ -3,12 +3,17 @@ import { OverlayScrollbars } from "./overlayscrollbars_2.4.4.min.js";
 
 const API_URL = "https://melon-grizzly-beaufort.glitch.me/api";
 
+const typesOperation = {
+  income: "доход",
+  expenses: "расход",
+};
+
 const financeForm = document.querySelector(".finance__form");
 const financeAmount = document.querySelector(".finance__amount");
 const report = document.querySelector(".report");
 const financeReport = document.querySelector(".finance__report");
 const reportOperationList = document.querySelector(".report__operation-list");
-console.log("reportOperationList: ", reportOperationList);
+const reportDates = document.querySelector(".report__dates");
 
 let amount = 0;
 
@@ -77,7 +82,50 @@ const openReport = () => {
   document.addEventListener("click", closeReport);
 };
 
+//   {
+//     "id": "5",
+//     "": "income",
+//     "amount": 7000,
+//     "": "Фриланс",
+//     "": "Дополнительный доход",
+//     "": "2023-09-18"
+// }
+
+const reformatDate = (dateStr) => {
+  const [year, month, day] = dateStr.split("-");
+  return `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year}`;
+};
+
 const renderReport = (data) => {
+  reportOperationList.textContent = "";
+
+  const reportRows = data.map(
+    ({ category, amount, description, date, type }) => {
+      const reportRow = document.createElement("tr");
+      reportRow.classList.add("report__row");
+
+      reportRow.innerHTML = `
+      <td class="report__cell">${category}</td>
+      <td class="report__cell" style="text-align: right">${amount.toLocaleString()}&nbsp;₽</td>
+      <td class="report__cell">${description}</td>
+      <td class="report__cell">${reformatDate(date)}</td>
+      <td class="report__cell">${typesOperation[type]}</td>
+      <td class="report__action-cell">
+        <button class="report__button report__button_table">
+          &#10006;
+        </button>
+      </td>
+    `;
+
+      return reportRow;
+    }
+  );
+
+  reportOperationList.append(...reportRows);
+};
+
+financeReport.addEventListener("click", async () => {
+  openReport();
   reportOperationList.innerHTML = `
   <div class="wrapper">
   <div class="line line1">
@@ -192,10 +240,30 @@ const renderReport = (data) => {
   </div>
 </div>
   `;
-};
-
-financeReport.addEventListener("click", async () => {
-  openReport();
   const data = await getData("/test");
+  renderReport(data);
+});
+
+reportDates.addEventListener("submit", async (e) => {
+  e.preventDefault(); //убирает перезагрузку страницы
+
+  const formData = Object.fromEntries(new FormData(reportDates));
+  // console.log("formData: ", formData); //вынимает данные
+
+  const searchParams = new URLSearchParams();
+
+  if (formData.startDate) {
+    searchParams.append("startDate", formData.startDate);
+  }
+
+  if (formData.endDate) {
+    searchParams.append("endDate", formData.endDate);
+  }
+
+  const queryString = searchParams.toString();
+
+  const url = queryString ? `/test?${queryString}` : "/test";
+
+  const data = await getData(url);
   renderReport(data);
 });

@@ -133,19 +133,19 @@
           <div class="container report__container">
             <h2 class="report__title">Отчет</h2>
 
-            <div class="report__dates">
+            <form class="report__dates">
               <div class="report__date">
                 <label for="start-date">Начало периода</label>
-                <input type="date" id="start-date" />
+                <input type="date" id="start-date" name="startDate" />
               </div>
 
               <div class="report__date">
                 <label for="end-date">Конец периода</label>
-                <input type="date" id="end-date" />
+                <input type="date" id="end-date"  name="endDate"/>
               </div>
 
               <button class="report__button">Показать</button>
-            </div>
+            </form>
 
             <table class="report__table">
               <thead>
@@ -161,44 +161,7 @@
               </thead>
 
               <tbody class="report__operation-list">
-                <tr class="report__row">
-                  <td class="report__cell">Продукты питания</td>
-                  <td class="report__cell">1000</td>
-                  <td class="report__cell">Магазин Spar</td>
-                  <td class="report__cell">01.01.2021</td>
-                  <td class="report__cell">расход</td>
-                  <td class="report__action-cell">
-                    <button class="report__button report__button_table">
-                      &#10006;
-                    </button>
-                  </td>
-                </tr>
-
-                <tr class="report__row">
-                  <td class="report__cell">Продукты питания</td>
-                  <td class="report__cell">1000</td>
-                  <td class="report__cell">Магазин Spar</td>
-                  <td class="report__cell">01.01.2021</td>
-                  <td class="report__cell">расход</td>
-                  <td class="report__action-cell">
-                    <button class="report__button report__button_table">
-                      &#10006;
-                    </button>
-                  </td>
-                </tr>
-
-                <tr class="report__row">
-                  <td class="report__cell">Продукты питания</td>
-                  <td class="report__cell">1000</td>
-                  <td class="report__cell">Магазин Spar</td>
-                  <td class="report__cell">01.01.2021</td>
-                  <td class="report__cell">расход</td>
-                  <td class="report__action-cell">
-                    <button class="report__button report__button_table">
-                      &#10006;
-                    </button>
-                  </td>
-                </tr>
+               <!-- рендерится с сервера -->
               </tbody>
             </table>
 
