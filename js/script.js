@@ -35,22 +35,11 @@ financeForm.addEventListener("submit", (e) => {
     amount -= changeAmount;
   }
 
-  financeAmount.textContent = `${amount.toLocaleString()} ₽`;
+  financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
   // .toLocaleString() - выводит числа с пробелом-разделителем
 });
 
 OverlayScrollbars(report, {});
-
-// мое решение открытия-закрытия модалки
-// const financeReport = document.querySelector(".finance__report");
-// const report = document.querySelector(".report");
-// financeReport.addEventListener("click", () => {
-//   report.classList.add("report__open");
-// });
-// const close = document.querySelector(".report__close");
-// close.addEventListener("click", () => {
-//   report.classList.remove("report__open");
-// });
 
 const getData = async (url) => {
   try {
@@ -76,13 +65,12 @@ const closeReport = ({ target }) => {
       opacity: 0,
       scale: 0,
       duration: 0.5,
-      easy: "power2.in",
+      ease: "power2.in",
       onComplete() {
         report.style.visibility = "hidden";
       },
     });
 
-    // report.classList.remove("report__open");
     document.removeEventListener("click", closeReport); //удалит слушателя при закрытой модалке
   }
 };
@@ -94,21 +82,11 @@ const openReport = () => {
     opacity: 1,
     scale: 1,
     duration: 0.5,
-    easy: "power2.out",
+    ease: "power2.out",
   });
 
-  // report.classList.add("report__open");
   document.addEventListener("click", closeReport);
 };
-
-//   {
-//     "id": "5",
-//     "": "income",
-//     "amount": 7000,
-//     "": "Фриланс",
-//     "": "Дополнительный доход",
-//     "": "2023-09-18"
-// }
 
 const reformatDate = (dateStr) => {
   const [year, month, day] = dateStr.split("-");
