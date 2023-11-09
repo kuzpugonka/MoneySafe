@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="ru">  
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" href="./img/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./css/overlayscrollbars_2.4.4.min.css">
+    <link rel="icon" href="./img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./css/overlayscrollbars_2.4.4.min.css" />
     <link href="css/style.css" rel="stylesheet" />
 
     <title>MoneySafe</title>
-
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="js/script.js" type="module"></script>
   </head>
 
   <body>
-   
     <section class="finance">
       <div class="container">
         <header class="finance__header">
@@ -141,7 +140,7 @@
 
               <div class="report__date">
                 <label for="end-date">Конец периода</label>
-                <input type="date" id="end-date"  name="endDate"/>
+                <input type="date" id="end-date" name="endDate" />
               </div>
 
               <button class="report__button">Показать</button>
@@ -161,7 +160,7 @@
               </thead>
 
               <tbody class="report__operation-list">
-               <!-- рендерится с сервера -->
+                <!-- рендерится с сервера -->
               </tbody>
             </table>
 

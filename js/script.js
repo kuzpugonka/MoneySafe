@@ -72,13 +72,32 @@ const closeReport = ({ target }) => {
     target.closest(".report__close") ||
     (!target.closest(".report") && target !== financeReport) //закроет окно вне модалки
   ) {
-    report.classList.remove("report__open");
+    gsap.to(report, {
+      opacity: 0,
+      scale: 0,
+      duration: 0.5,
+      easy: "power2.in",
+      onComplete() {
+        report.style.visibility = "hidden";
+      },
+    });
+
+    // report.classList.remove("report__open");
     document.removeEventListener("click", closeReport); //удалит слушателя при закрытой модалке
   }
 };
 
 const openReport = () => {
-  report.classList.add("report__open");
+  report.style.visibility = "visible";
+
+  gsap.to(report, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.5,
+    easy: "power2.out",
+  });
+
+  // report.classList.add("report__open");
   document.addEventListener("click", closeReport);
 };
 
@@ -125,8 +144,11 @@ const renderReport = (data) => {
 };
 
 financeReport.addEventListener("click", async () => {
-  openReport();
-  reportOperationList.innerHTML = `
+  const textContent = financeReport.textContent;
+  financeReport.textContent = "Загрузка"; //надпись на кнопке при клике
+  financeReport.disabled = true;
+  // анимация ожидания загрузки контента
+  reportOperationList.innerHTML = ` 
   <div class="wrapper">
   <div class="line line1">
     <span class="circle circle-top"></span>
@@ -241,7 +263,10 @@ financeReport.addEventListener("click", async () => {
 </div>
   `;
   const data = await getData("/test");
+  financeReport.textContent = textContent; // отключает надпись на кнопке
+  financeReport.disabled = false;
   renderReport(data);
+  openReport();
 });
 
 reportDates.addEventListener("submit", async (e) => {
