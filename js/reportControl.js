@@ -1,6 +1,7 @@
 import { reformatDate } from "./helper.js";
 import { OverlayScrollbars } from "./overlayscrollbars_2.4.4.min.js";
 import { getData } from "./service.js";
+import { storoge } from "./storoge.js";
 
 const typesOperation = {
   income: "доход",
@@ -9,6 +10,7 @@ const typesOperation = {
 const report = document.querySelector(".report");
 const financeReport = document.querySelector(".finance__report");
 const reportOperationList = document.querySelector(".report__operation-list");
+const reportTable = document.querySelector(".report__table");
 const reportDates = document.querySelector(".report__dates");
 
 OverlayScrollbars(report, {});
@@ -60,7 +62,7 @@ const renderReport = (data) => {
       <td class="report__cell">${reformatDate(date)}</td>
       <td class="report__cell">${typesOperation[type]}</td>
       <td class="report__action-cell">
-        <button class="report__button report__button_table" data-id=${id}>
+        <button class="report__button report__button_table" data-del=${id}>
           &#10006;
         </button>
       </td>
@@ -73,13 +75,39 @@ const renderReport = (data) => {
   reportOperationList.append(...reportRows);
 };
 
-
-
 export const reportControl = () => {
-  reportOperationList.addEventListener('click', ({ target }) => {
-    console.log('target: ', target.dataset.id); //dz
-  })
+  reportTable.addEventListener("click", ({ target }) => {
+    const targetSort = target.closest("[data-sort]");
 
+    if (targetSort) {
+      const sortField = targetSort.dataset.sort; //dz
+
+      renderReport(
+        [...storoge.data].sort((a, b) => {
+          if (targetSort.dataset.dir === "up") {
+            [a, b] = [b, a];
+          }
+
+          if (sortField === "amount") {
+            return parseFloat(a[sortField]) < parseFloat(b[sortField]) ? -1 : 1;
+          }
+          return a[sortField] < b[sortField] ? -1 : 1;
+        })
+      );
+      if (targetSort.dataset.dir === "up") {
+        targetSort.dataset.dir = "down";
+      } else {
+        targetSort.dataset.dir = "up";
+      }
+    }
+
+    const targetDel = target.closest("[data-del]");
+    if (targetDel) {
+      console.log("targetDel: ", targetDel.dataset.del); //dz
+    }
+
+    console.log("targetSort: ", targetSort);
+  });
 
   financeReport.addEventListener("click", async () => {
     const textContent = financeReport.textContent;
@@ -201,33 +229,34 @@ export const reportControl = () => {
   </div>
     `;
     const data = await getData("/finance");
+    storoge.data = data;
     financeReport.textContent = textContent; // отключает надпись на кнопке
     financeReport.disabled = false;
     renderReport(data);
     openReport();
   });
-  
+
   reportDates.addEventListener("submit", async (e) => {
     e.preventDefault(); //убирает перезагрузку страницы
-  
+
     const formData = Object.fromEntries(new FormData(reportDates));
     // console.log("formData: ", formData); //вынимает данные
-  
+
     const searchParams = new URLSearchParams();
-  
+
     if (formData.startDate) {
       searchParams.append("startDate", formData.startDate);
     }
-  
+
     if (formData.endDate) {
       searchParams.append("endDate", formData.endDate);
     }
-  
+
     const queryString = searchParams.toString();
-  
+
     const url = queryString ? `/finance?${queryString}` : "/finance";
-  
+
     const data = await getData(url);
     renderReport(data);
   });
-}
+};
