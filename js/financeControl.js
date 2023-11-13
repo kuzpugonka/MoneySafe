@@ -1,3 +1,4 @@
+import { animationNumber } from "./animationNumber.js";
 import { convertStringNumber } from "./helper.js"; // обязательно дописать ручками .js
 import { getData, postData } from "./service.js";
 
@@ -49,8 +50,8 @@ export const financeControl = async () => {
 
     return acc;
   }, 0);
-
-  financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
+  animationNumber(financeAmount, amount)
+  // financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
 
   financeForm.addEventListener("submit", addNewOperation);
 };
