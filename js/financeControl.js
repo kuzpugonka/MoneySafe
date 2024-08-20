@@ -21,7 +21,7 @@ const addNewOperation = async (e) => {
   const newOperation = await postData("/finance", financeFormDate);
 
   const changeAmount = Math.abs(convertStringNumber(newOperation.amount));
-  // console.log("changeAmount: ", typeof changeAmount); // typeof определяет тип данных
+  console.log("changeAmount: ", typeof changeAmount); // typeof определяет тип данных
 
   if (typeOperation === "income") {
     amount += changeAmount;
@@ -31,9 +31,7 @@ const addNewOperation = async (e) => {
     amount -= changeAmount;
   }
 
-  financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
-  // .toLocaleString() - выводит числа с пробелом-разделителем
-
+  animationNumber(financeAmount, amount);
   financeForm.reset();
 };
 
@@ -45,13 +43,12 @@ export const financeControl = async () => {
       acc += convertStringNumber(item.amount);
     }
     if (item.type === "expenses") {
-      acc += convertStringNumber(item.amount);
+      acc -= convertStringNumber(item.amount);
     }
 
     return acc;
   }, 0);
   animationNumber(financeAmount, amount)
-  // financeAmount.textContent = `${amount.toLocaleString("RU-ru")} ₽`;
 
   financeForm.addEventListener("submit", addNewOperation);
 };
